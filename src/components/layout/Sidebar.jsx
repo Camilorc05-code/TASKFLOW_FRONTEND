@@ -1,7 +1,16 @@
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
-import { NAV_ITEMS } from '../../utils/constants'
 import Avatar from '../ui/Avatar'
+
+const NAV_ITEMS = [
+  { id: 'dashboard', path: '/dashboard', icon: '⊞', label: 'Dashboard' },
+  { id: 'board',     path: '/board',     icon: '⬡', label: 'Board'     },
+  { id: 'calendar',  path: '/calendar',  icon: '📅', label: 'Calendar'  },  
+  { id: 'backlog',   path: '/backlog',   icon: '📋', label: 'Backlog'  },  
+  { id: 'tasks',     path: '/tasks',     icon: '✓',  label: 'Tasks'    },
+  { id: 'teams',     path: '/teams',     icon: '◎',  label: 'Teams'    },
+  { id: 'settings',  path: '/settings',  icon: '⚙',  label: 'Settings' },
+]
 
 export default function Sidebar() {
   const { user, logOut } = useAuth()

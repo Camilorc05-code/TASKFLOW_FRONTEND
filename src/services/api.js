@@ -1,4 +1,4 @@
-const BASE = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000'
+const BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
 const getToken = () => localStorage.getItem('taskflow_token')
 
@@ -17,12 +17,25 @@ async function req(endpoint, options = {}) {
 }
 
 // Auth
-export const login = async (username, password) => {
-  const body = new URLSearchParams({ username, password })
-  const res = await fetch(`${BASE}/login`, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body })
-  if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.detail || 'Login failed') }
-  return res.json()
-}
+export const login = async (email, password) => {
+  const res = await fetch(`${BASE}/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      email,
+      password
+    })
+  });
+
+  if (!res.ok) {
+    const e = await res.json().catch(() => ({}));
+    throw new Error(e.detail || 'Login failed');
+  }
+
+  return res.json();
+};
 export const register = (data) => req('/register', { method: 'POST', body: JSON.stringify(data) })
 export const changePassword = (data) => req('/change-password', { method: 'POST', body: JSON.stringify(data) })
 export const requestPasswordReset = (email) => req('/reset-password/request', { method: 'POST', body: JSON.stringify({ email }) })
