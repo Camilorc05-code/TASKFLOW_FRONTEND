@@ -437,18 +437,6 @@ function TeamDetailModal({ team, tasks, currentUser, onClose, toast }) {
             </div>
           ))}
 
-          {/* SMTP config hint */}
-          <div style={{ marginTop:16, padding:'12px 14px', background:'rgba(124,109,250,.05)', borderRadius:10, border:'1px solid rgba(124,109,250,.15)', fontSize:12, color:'var(--text-2)', lineHeight:1.6 }}>
-            💡 <strong style={{ color:'var(--text)' }}>To send real emails:</strong> configure
-            <code style={{ color:'var(--accent)', fontFamily:"'JetBrains Mono',monospace" }}> SMTP_HOST</code>,
-            <code style={{ color:'var(--accent)', fontFamily:"'JetBrains Mono',monospace" }}> SMTP_USER</code> y
-            <code style={{ color:'var(--accent)', fontFamily:"'JetBrains Mono',monospace" }}> SMTP_PASS</code> en el
-            <code style={{ color:'var(--accent)', fontFamily:"'JetBrains Mono',monospace" }}> .env</code> del backend.
-            See <strong>ENV_EXAMPLE.txt</strong> in the ZIP.
-          </div>
-        </div>
-      )}
-
       {/* ── PROJECTS tab ── */}
       {tab === 'projects' && (
         <div>
