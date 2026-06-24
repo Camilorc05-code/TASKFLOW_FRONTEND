@@ -290,168 +290,216 @@ function TeamDetailModal({ team, tasks, currentUser, onClose, toast }) {
   }
 
   return (
-  <Modal open onClose={onClose} title={`◎  ${team.name}`} width={660}>
+    <Modal open onClose={onClose} title={`◎  ${team.name}`} width={660}>
 
-    {/* Stats */}
-    <div style={{ display:'flex', gap:12, marginBottom:18, flexWrap:'wrap' }}>
-      {[[teamTasks.length,'Tasks','var(--accent)'],
-        [teamTasks.filter(t=>t.status==='done').length,'Done','var(--green)'],
-        [members.length,'Members','var(--teal)'],
-        [projects.length,'Projects','var(--amber)'],
-        [pendingInvites.length,'Pending','var(--text-2)']
-      ].map(([v,l,c]) => (
-        <div key={l} style={{ flex:1, minWidth:80, padding:'10px 12px', background:'var(--bg-input)', borderRadius:10, textAlign:'center', border:'1px solid var(--border)' }}>
-          <div style={{ fontSize:20, fontWeight:800, color:c, fontFamily:"'Syne',sans-serif" }}>{v}</div>
-          <div style={{ fontSize:11, color:'var(--text-2)', marginTop:2, fontWeight:500 }}>{l}</div>
-        </div>
-      ))}
-    </div>
-
-    {/* Progress */}
-    <div className="progress-track" style={{ height:5, marginBottom:20 }}>
-      <div className="progress-fill" style={{ width:`${progress}%` }} />
-    </div>
-
-    {/* Tabs */}
-    <div style={{ display:'flex', gap:4, marginBottom:18, background:'var(--bg-input)', borderRadius:10, padding:4 }}>
-      {[['members','👥 Members'],['invites','✉ Invites'],['projects','📁 Projects'],['tasks','✓ Tasks']].map(([id,label]) => (
-        <button key={id} className={`tab ${tab===id?'active':''}`} onClick={() => setTab(id)} style={{ flex:1 }}>
-          {label}
-        </button>
-      ))}
-    </div>
-
-    {/* MEMBERS */}
-    {tab === 'members' && (
-      <div>
-        {loadingM ? (
-          <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-            {[1,2,3].map(i => <div key={i} className="skeleton" style={{ height:58, borderRadius:10 }} />)}
-          </div>
-        ) : members.length === 0 ? (
-          <div style={{ textAlign:'center', padding:28, color:'var(--text-2)', fontSize:14 }}>
-            No members yet.
-          </div>
-        ) : members.map(m => (
-          <div key={m.id} style={{ display:'flex', alignItems:'center', gap:12, padding:'10px 14px', borderRadius:10, border:'1px solid var(--border)', marginBottom:8, background:'var(--bg-input)' }}>
-            <Avatar name={m.username} size={38} />
-            <div style={{ flex:1 }}>
-              <div style={{ fontSize:14, fontWeight:600 }}>{m.username}</div>
-              <div style={{ fontSize:12, color:'var(--text-2)' }}>{m.email}</div>
-            </div>
-            <span style={{ fontSize:11, padding:'3px 10px', borderRadius:6, fontWeight:600 }}>
-              {m.role === 'owner' ? '👑 Owner' : 'Member'}
-            </span>
+      {/* Stats */}
+      <div style={{ display:'flex', gap:12, marginBottom:18, flexWrap:'wrap' }}>
+        {[[teamTasks.length,'Tasks','var(--accent)'],
+          [teamTasks.filter(t=>t.status==='done').length,'Done','var(--green)'],
+          [members.length,'Members','var(--teal)'],
+          [projects.length,'Projects','var(--amber)'],
+          [pendingInvites.length,'Pending','var(--text-2)']
+        ].map(([v,l,c]) => (
+          <div key={l} style={{ flex:1, minWidth:80, padding:'10px 12px', background:'var(--bg-input)', borderRadius:10, textAlign:'center', border:'1px solid var(--border)' }}>
+            <div style={{ fontSize:20, fontWeight:800, color:c, fontFamily:"'Syne',sans-serif" }}>{v}</div>
+            <div style={{ fontSize:11, color:'var(--text-2)', marginTop:2, fontWeight:500 }}>{l}</div>
           </div>
         ))}
       </div>
-    )}
 
-    {/* INVITES */}
-    {tab === 'invites' && (
-      <div>
-        {/* Send invite */}
-        <div style={{ marginBottom:20 }}>
-          <label className="label">Invite by email</label>
-          <div style={{ display:'flex', gap:8 }}>
-            <input
-              className="input"
-              type="email"
-              placeholder="anyone@example.com"
-              value={inviteEmail}
-              onChange={e => setInviteEmail(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && handleInvite()}
-              style={{ flex:1 }}
-              autoFocus
-            />
-            <button className="btn-primary" onClick={handleInvite} disabled={inviting}>
-              ✉ Send
+      {/* Progress */}
+      <div className="progress-track" style={{ height:5, marginBottom:20 }}>
+        <div className="progress-fill" style={{ width:`${progress}%` }} />
+      </div>
+
+      {/* Tabs */}
+      <div style={{ display:'flex', gap:4, marginBottom:18, background:'var(--bg-input)', borderRadius:10, padding:4 }}>
+        {[['members','👥 Members'],['invites','✉ Invites'],['projects','📁 Projects'],['tasks','✓ Tasks']].map(([id,label]) => (
+          <button key={id} className={`tab ${tab===id?'active':''}`} onClick={() => setTab(id)} style={{ flex:1 }}>{label}</button>
+        ))}
+      </div>
+
+      {/* ── MEMBERS tab ── */}
+      {tab === 'members' && (
+        <div>
+          {loadingM ? (
+            <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+              {[1,2,3].map(i => <div key={i} className="skeleton" style={{ height:58, borderRadius:10 }} />)}
+            </div>
+          ) : members.length === 0 ? (
+            <div style={{ textAlign:'center', padding:28, color:'var(--text-2)', fontSize:14 }}>No members yet.</div>
+          ) : members.map(m => (
+            <div key={m.id} style={{ display:'flex', alignItems:'center', gap:12, padding:'10px 14px', borderRadius:10, border:'1px solid var(--border)', marginBottom:8, background:'var(--bg-input)' }}>
+              <Avatar name={m.username} size={38} />
+              <div style={{ flex:1 }}>
+                <div style={{ fontSize:14, fontWeight:600 }}>{m.username}</div>
+                <div style={{ fontSize:12, color:'var(--text-2)' }}>{m.email}</div>
+              </div>
+              <span style={{ fontSize:11, padding:'3px 10px', borderRadius:6, fontWeight:600,
+                background: m.role==='owner' ? 'rgba(124,109,250,.15)' : 'var(--bg-hover)',
+                color:      m.role==='owner' ? 'var(--accent)'          : 'var(--text-2)',
+                border:     `1px solid ${m.role==='owner' ? 'rgba(124,109,250,.3)' : 'var(--border)'}` }}>
+                {m.role === 'owner' ? '👑 Owner' : 'Member'}
+              </span>
+              {m.role !== 'owner' && (
+                <button onClick={() => handleRemoveMember(m.id)}
+                  style={{ background:'none', border:'none', color:'var(--text-3)', cursor:'pointer', fontSize:16, padding:'2px 5px', transition:'color .15s' }}
+                  onMouseEnter={e => e.target.style.color = 'var(--red)'}
+                  onMouseLeave={e => e.target.style.color = 'var(--text-3)'}>✕</button>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* ── INVITES tab ── */}
+      {tab === 'invites' && (
+        <div>
+          {/* Send invite — works with ANY email */}
+          <div style={{ marginBottom:20 }}>
+            <label className="label">Invite by email</label>
+            <div style={{ display:'flex', gap:8 }}>
+              <input className="input" type="email" placeholder="anyone@example.com — registered or not"
+                value={inviteEmail} onChange={e => setInviteEmail(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleInvite()} style={{ flex:1 }} autoFocus />
+              <button className="btn-primary" onClick={handleInvite} disabled={inviting}
+                style={{ padding:'10px 18px', flexShrink:0 }}>
+                {inviting ? <Spinner size={16} color="#fff" /> : '✉ Send'}
+              </button>
+            </div>
+            <p style={{ fontSize:12, color:'var(--text-2)', marginTop:8, lineHeight:1.5 }}>
+              The person <strong>doesn't need to have a TaskFlow account</strong> — they'll receive an invite link and can register if needed.
+            </p>
+          </div>
+
+          {/* Invite result */}
+          {inviteResult && (
+            <div className="a-scale" style={{ padding:'14px 16px', borderRadius:12, marginBottom:18,
+              background: inviteResult.email_sent ? 'rgba(0,229,160,.07)' : 'rgba(255,181,71,.07)',
+              border:     `1px solid ${inviteResult.email_sent ? 'rgba(0,229,160,.25)' : 'rgba(255,181,71,.25)'}` }}>
+              <div style={{ fontSize:13, fontWeight:600, marginBottom:6,
+                color: inviteResult.email_sent ? 'var(--green)' : 'var(--amber)' }}>
+                {inviteResult.email_sent ? '✉ Email sent successfully!' : '⚠ Token generated (SMTP not configured)'}
+              </div>
+              {!inviteResult.email_sent && (
+                <>
+                  <p style={{ fontSize:12, color:'var(--text-2)', marginBottom:8, lineHeight:1.5 }}>
+                    Share this link manually with <strong>{inviteResult.message?.split('to ')[1]}</strong>:
+                    {inviteResult.needs_register && <span style={{ color:'var(--amber)' }}> (they need to register first)</span>}
+                  </p>
+                  <div style={{ display:'flex', gap:8, alignItems:'center' }}>
+                    <code style={{ flex:1, fontSize:11, background:'var(--bg-input)', padding:'7px 10px', borderRadius:7, color:'var(--accent)', wordBreak:'break-all', fontFamily:"'JetBrains Mono',monospace", border:'1px solid var(--border)' }}>
+                      {window.location.origin}/invite/accept?token={inviteResult.invite_token}
+                    </code>
+                    <button onClick={() => { navigator.clipboard.writeText(`${window.location.origin}/invite/accept?token=${inviteResult.invite_token}`); toast('Link copied!') }}
+                      className="btn-ghost" style={{ flexShrink:0, fontSize:12, padding:'7px 12px' }}>
+                      📋 Copy
+                    </button>
+                  </div>
+                </>
+              )}
+              <button onClick={() => setInviteResult(null)}
+                style={{ background:'none', border:'none', color:'var(--text-2)', cursor:'pointer', fontSize:12, marginTop:8, fontFamily:"'Inter',sans-serif" }}>
+                Dismiss ✕
+              </button>
+            </div>
+          )}
+
+          {/* Pending invites list */}
+          <div style={{ fontSize:12, fontWeight:700, color:'var(--text-3)', textTransform:'uppercase', letterSpacing:'.06em', marginBottom:10 }}>
+            Pending Invitations ({pendingInvites.length})
+          </div>
+          {loadingI ? (
+            <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+              {[1,2].map(i => <div key={i} className="skeleton" style={{ height:50, borderRadius:10 }} />)}
+            </div>
+          ) : pendingInvites.length === 0 ? (
+            <div style={{ textAlign:'center', padding:'20px', color:'var(--text-3)', fontSize:13, border:'1px dashed var(--border)', borderRadius:10 }}>
+              No pending invitations
+            </div>
+          ) : pendingInvites.map(inv => (
+            <div key={inv.id} style={{ display:'flex', alignItems:'center', gap:12, padding:'10px 14px', borderRadius:10, border:'1px solid var(--border)', marginBottom:8, background:'var(--bg-input)' }}>
+              <div style={{ width:36, height:36, borderRadius:9, background:'rgba(124,109,250,.12)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:18, flexShrink:0 }}>✉</div>
+              <div style={{ flex:1 }}>
+                <div style={{ fontSize:13, fontWeight:600 }}>{inv.email}</div>
+                <div style={{ fontSize:11, color:'var(--text-2)' }}>
+                  Sent {inv.created_at ? new Date(inv.created_at).toLocaleDateString('en-US',{ month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' }) : ''}
+                </div>
+              </div>
+              <span style={{ fontSize:11, padding:'3px 9px', borderRadius:6, background:'rgba(255,181,71,.12)', color:'var(--amber)', border:'1px solid rgba(255,181,71,.25)', fontWeight:600 }}>
+                Pending
+              </span>
+              <button onClick={() => handleCancelInvite(inv.id)}
+                title="Cancel invitation"
+                style={{ background:'none', border:'none', color:'var(--text-3)', cursor:'pointer', fontSize:15, padding:'2px 5px', transition:'color .15s' }}
+                onMouseEnter={e => e.target.style.color = 'var(--red)'}
+                onMouseLeave={e => e.target.style.color = 'var(--text-3)'}>✕</button>
+            </div>
+          ))}
+
+          
+        </div>
+      )}
+
+      {/* ── PROJECTS tab ── */}
+      {tab === 'projects' && (
+        <div>
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr auto', gap:8, marginBottom:14, alignItems:'end' }}>
+            <div>
+              <label className="label">Project Name</label>
+              <input className="input" placeholder="Sprint 1" value={newProject.name}
+                onChange={e => setNewProject(f => ({ ...f, name: e.target.value }))} />
+            </div>
+            <div>
+              <label className="label">Description</label>
+              <input className="input" placeholder="Optional" value={newProject.description}
+                onChange={e => setNewProject(f => ({ ...f, description: e.target.value }))} />
+            </div>
+            <button className="btn-teal" onClick={handleCreateProject} disabled={creatingP}
+              style={{ padding:'11px 16px', flexShrink:0 }}>
+              {creatingP ? <Spinner size={15} /> : '+ Add'}
             </button>
           </div>
-        </div>
-
-        {/* Invite result */}
-        {inviteResult && (
-          <div style={{ padding:'14px 16px', borderRadius:12, marginBottom:18 }}>
-            <div style={{ fontSize:13, fontWeight:600 }}>
-              {inviteResult.email_sent ? '✉ Email sent!' : '⚠ Token generated'}
+          {loadingP ? (
+            <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+              {[1,2].map(i => <div key={i} className="skeleton" style={{ height:60, borderRadius:10 }} />)}
             </div>
-
-            {!inviteResult.email_sent && (
-              <>
-                <div style={{ marginTop:8 }}>
-                  Share link:
-                </div>
-                <code>
-                  {window.location.origin}/invite/accept?token={inviteResult.invite_token}
-                </code>
-              </>
-            )}
-          </div>
-        )}
-
-        {/* Pending invites */}
-        <div style={{ fontSize:12, fontWeight:700, marginBottom:10 }}>
-          Pending Invitations ({pendingInvites.length})
-        </div>
-
-        {loadingI ? (
-          <div>Loading...</div>
-        ) : pendingInvites.length === 0 ? (
-          <div style={{ textAlign:'center', padding:20 }}>
-            No pending invitations
-          </div>
-        ) : (
-          pendingInvites.map(inv => (
-            <div key={inv.id} style={{ display:'flex', alignItems:'center', gap:12, padding:'10px 14px', border:'1px solid var(--border)', marginBottom:8 }}>
-              <div style={{ flex:1 }}>{inv.email}</div>
-              <button onClick={() => handleCancelInvite(inv.id)}>✕</button>
+          ) : projects.length === 0 ? (
+            <div style={{ textAlign:'center', padding:28, color:'var(--text-2)', fontSize:14 }}>No projects yet.</div>
+          ) : projects.map(p => (
+            <div key={p.id} style={{ display:'flex', alignItems:'center', gap:12, padding:'12px 14px', borderRadius:10, border:'1px solid var(--border)', marginBottom:8, background:'var(--bg-input)' }}>
+              <div style={{ width:36, height:36, borderRadius:9, background:'linear-gradient(135deg,var(--accent),var(--teal))', display:'flex', alignItems:'center', justifyContent:'center', fontSize:16, flexShrink:0 }}>📁</div>
+              <div style={{ flex:1 }}>
+                <div style={{ fontSize:14, fontWeight:600 }}>{p.name}</div>
+                {p.description && <div style={{ fontSize:12, color:'var(--text-2)' }}>{p.description}</div>}
+              </div>
+              <span style={{ fontSize:12, color:'var(--text-2)', background:'var(--bg-hover)', padding:'3px 10px', borderRadius:6, border:'1px solid var(--border)' }}>
+                {tasks.filter(t => t.project_id === p.id).length} tasks
+              </span>
             </div>
-          ))
-        )}
-      </div>
-    )}
-
-    {/* PROJECTS */}
-    {tab === 'projects' && (
-      <div>
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr auto', gap:8, marginBottom:14 }}>
-          <input
-            className="input"
-            placeholder="Project name"
-            value={newProject.name}
-            onChange={e => setNewProject(f => ({ ...f, name: e.target.value }))}
-          />
-          <input
-            className="input"
-            placeholder="Description"
-            value={newProject.description}
-            onChange={e => setNewProject(f => ({ ...f, description: e.target.value }))}
-          />
-          <button onClick={handleCreateProject} disabled={creatingP}>
-            + Add
-          </button>
+          ))}
         </div>
+      )}
 
-        {projects.map(p => (
-          <div key={p.id}>
-            {p.name}
-          </div>
-        ))}
-      </div>
-    )}
-
-    {/* TASKS */}
-    {tab === 'tasks' && (
-      <div>
-        {teamTasks.map(t => (
-          <div key={t.id}>
-            {t.title}
-          </div>
-        ))}
-      </div>
-    )}
-
-  </Modal>
-)
+      {/* ── TASKS tab ── */}
+      {tab === 'tasks' && (
+        <div>
+          {teamTasks.length === 0 ? (
+            <div style={{ textAlign:'center', padding:28, color:'var(--text-2)', fontSize:14 }}>No tasks assigned to this team.</div>
+          ) : teamTasks.map(t => {
+            const pri = PRIORITY_CONFIG[t.priority] || PRIORITY_CONFIG.medium
+            const sta = STATUS_CONFIG[t.status]     || STATUS_CONFIG.todo
+            return (
+              <div key={t.id} style={{ display:'flex', alignItems:'center', gap:10, padding:'10px 14px', borderRadius:10, border:'1px solid var(--border)', marginBottom:8, background:'var(--bg-input)' }}>
+                <div style={{ width:8, height:8, borderRadius:'50%', background:sta.dot, flexShrink:0 }} />
+                <div style={{ flex:1, fontSize:14, fontWeight:500 }}>{t.title}</div>
+                <span className="badge" style={{ background:`${pri.color}14`, color:pri.color, fontSize:11 }}>{pri.icon} {pri.label}</span>
+                <span className="badge" style={{ background:`${sta.dot}18`, color:sta.dot,  fontSize:11 }}>{sta.label}</span>
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </Modal>
+  )
 }
