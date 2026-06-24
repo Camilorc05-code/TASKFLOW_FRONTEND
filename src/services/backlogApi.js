@@ -1,4 +1,4 @@
-const BASE = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000'
+const BASE = import.meta.env.VITE_API_URL || 'https://taskflow-backend-nhsr.onrender.com'
 const getToken = () => localStorage.getItem('taskflow_token')
 
 async function req(endpoint, options = {}) {
