@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import Spinner from '../components/ui/Spinner'
 
-const BASE = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000'
+const BASE = import.meta.env.VITE_API_URL || 'https://taskflow-backend-nhsr.onrender.com'
 
 export default function AcceptInvitePage() {
   const [params]        = useSearchParams()
