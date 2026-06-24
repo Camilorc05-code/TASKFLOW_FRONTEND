@@ -9,7 +9,7 @@ import Spinner from '../components/ui/Spinner'
 import Avatar  from '../components/ui/Avatar'
 
 // ── api calls ─────────────────────────────────────────────────────────────
-const BASE = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000'
+const BASE = import.meta.env.VITE_API_URL || 'https://taskflow-backend-nhsr.onrender.com'
 const authFetch = async (url, opts = {}) => {
   const token = localStorage.getItem('taskflow_token')
   const res = await fetch(`${BASE}${url}`, {
