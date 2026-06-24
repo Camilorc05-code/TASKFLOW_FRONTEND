@@ -1,15 +1,15 @@
 import { useState, useEffect, useCallback } from 'react'
 import {
   getSprints, getBacklogItems, moveItemToSprint,
-} from '../services/backlogApi'   // ✅ correcto, porque BacklogPage.jsx está en src/pages
+} from '../services/backlogApi'   
 import { getTeams } from '../services/api'
 import { useToast } from '../context/ToastContext'
 import Modal         from '../components/ui/Modal'
 import Spinner       from '../components/ui/Spinner'
-import SprintCard     from '../backlog/SprintCard'       // ✅ correcto, porque está en src/backlog
-import BacklogItemRow from '../backlog/BacklogItemRow'   // ✅ correcto
-import ItemForm       from '../backlog/ItemForm'         // ✅ correcto
-import SprintForm     from '../backlog/SprintForm'       // ✅ correcto
+import SprintCard     from '../backlog/SprintCard'       
+import BacklogItemRow from '../backlog/BacklogItemRow'  
+import ItemForm       from '../backlog/ItemForm'         
+import SprintForm     from '../backlog/SprintForm'       
 
 
 // ── helpers ───────────────────────────────────────────────────────────────
