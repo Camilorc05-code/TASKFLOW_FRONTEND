@@ -6,7 +6,7 @@ import Spinner from '../components/ui/Spinner'
 import Avatar from '../components/ui/Avatar'
 
 export default function SettingsPage() {
-  const { user, logOut } = useAuth()
+  const { user } = useAuth()
   const { toast } = useToast()
   const [tab, setTab] = useState('profile')
 
@@ -22,7 +22,7 @@ export default function SettingsPage() {
 
         {/* Side nav / tabs */}
         <div className="settings-sidenav card a-fadein" style={{ padding:8 }}>
-          {[['profile','👤 Profile'],['security','🔐 Security'],['danger','⚠ Account']].map(([id,label])=>(
+          {[['profile','👤 Profile'],['security','🔐 Security']].map(([id,label])=>(
             <button key={id} onClick={()=>setTab(id)}
               className={`nav-link ${tab===id?'active':''}`}
               style={{ width:'100%', textAlign:'left', border:'none', fontFamily:"'Inter',sans-serif" }}>
@@ -34,7 +34,6 @@ export default function SettingsPage() {
         <div className="a-slider" style={{ animationDelay:'.08s' }}>
           {tab==='profile'  && <ProfilePanel user={user} />}
           {tab==='security' && <SecurityPanel toast={toast} />}
-          {tab==='danger'   && <DangerPanel logOut={logOut} toast={toast} />}
         </div>
       </div>
     </div>
