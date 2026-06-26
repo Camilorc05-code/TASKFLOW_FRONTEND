@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { changePassword } from '../services/api'
+import { changePassword, updateProfile } from '../services/api'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
 import Spinner from '../components/ui/Spinner'
@@ -42,22 +42,107 @@ export default function SettingsPage() {
 }
 
 function ProfilePanel({ user }) {
+  const { toast } = useToast()
+
+  const [username, setUsername] = useState(user || '')
+  const [loading, setLoading] = useState(false)
+
+  const handleSave = async () => {
+    if (!username.trim()) {
+      toast('Username cannot be empty', 'warn')
+      return
+    }
+
+    try {
+      setLoading(true)
+
+      await updateProfile({
+        username
+      })
+
+      toast('Profile updated successfully')
+    } catch (e) {
+      toast(e.message, 'error')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="card">
-      <h2 style={{ fontSize:16, fontWeight:700, fontFamily:"'Syne',sans-serif", marginBottom:18 }}>Profile</h2>
-      <div style={{ display:'flex', alignItems:'center', gap:14, padding:'14px 16px', background:'var(--bg-input)', borderRadius:12, border:'1px solid var(--border)', marginBottom:18 }}>
-        <Avatar name={user} size={52} />
+      <h2
+        style={{
+          fontSize:16,
+          fontWeight:700,
+          fontFamily:"'Syne',sans-serif",
+          marginBottom:18
+        }}
+      >
+        Profile
+      </h2>
+
+      <div
+        style={{
+          display:'flex',
+          alignItems:'center',
+          gap:14,
+          padding:'14px 16px',
+          background:'var(--bg-input)',
+          borderRadius:12,
+          border:'1px solid var(--border)',
+          marginBottom:18
+        }}
+      >
+        <Avatar name={username} size={52} />
+
         <div>
-          <div style={{ fontSize:17, fontWeight:700, marginBottom:3 }}>{user}</div>
-          <div style={{ fontSize:13, color:'var(--text-2)' }}>Member · TaskFlow</div>
+          <div
+            style={{
+              fontSize:17,
+              fontWeight:700,
+              marginBottom:3
+            }}
+          >
+            {username}
+          </div>
+
+          <div
+            style={{
+              fontSize:13,
+              color:'var(--text-2)'
+            }}
+          >
+            Member · TaskFlow
+          </div>
         </div>
       </div>
+
       <div>
         <label className="label">Username</label>
-        <input className="input" value={user||''} readOnly style={{ opacity:.6, cursor:'not-allowed' }} />
+
+        <input
+          className="input"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
       </div>
-      <div style={{ padding:'12px 14px', background:'rgba(124,109,250,.06)', borderRadius:10, border:'1px solid rgba(124,109,250,.15)', fontSize:13, color:'var(--text-2)', lineHeight:1.6, marginTop:14 }}>
-        💡 To update your profile, add a <code style={{ color:'var(--accent)', fontSize:12 }}>PUT /users/me</code> endpoint to the backend.
+
+      <div
+        style={{
+          display:'flex',
+          justifyContent:'flex-end',
+          marginTop:14
+        }}
+      >
+        <button
+          className="btn-primary"
+          onClick={handleSave}
+          disabled={loading}
+        >
+          {loading
+            ? <Spinner size={16} color="#fff" />
+            : '💾 Save Changes'}
+        </button>
       </div>
     </div>
   )

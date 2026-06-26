@@ -38,6 +38,7 @@ export const login = async (email, password) => {
 };
 export const register = (data) => req('/register', { method: 'POST', body: JSON.stringify(data) })
 export const changePassword = (data) => req('/change-password', { method: 'POST', body: JSON.stringify(data) })
+export const updateProfile = (data) =>req('/users/me', {method: 'PUT', body: JSON.stringify(data)})
 export const requestPasswordReset = (email) => req('/reset-password/request', { method: 'POST', body: JSON.stringify({ email }) })
 export const confirmPasswordReset = (token, new_password) => req('/reset-password/confirm', { method: 'POST', body: JSON.stringify({ token, new_password }) })
 
