@@ -8,7 +8,6 @@ import Avatar from '../components/ui/Avatar'
 export default function SettingsPage() {
   const { user, logOut } = useAuth()
   const { toast } = useToast()
-const { updateUser } = useAuth()
   const [tab, setTab] = useState('profile')
 
   return (
@@ -44,6 +43,7 @@ const { updateUser } = useAuth()
 
 function ProfilePanel({ user }) {
   const { toast } = useToast()
+  const { updateUser } = useAuth()
 
   const [username, setUsername] = useState(user || '')
   const [loading, setLoading] = useState(false)
