@@ -8,6 +8,7 @@ import Avatar from '../components/ui/Avatar'
 export default function SettingsPage() {
   const { user, logOut } = useAuth()
   const { toast } = useToast()
+const { updateUser } = useAuth()
   const [tab, setTab] = useState('profile')
 
   return (
@@ -56,11 +57,13 @@ function ProfilePanel({ user }) {
     try {
       setLoading(true)
 
-      await updateProfile({
-        username
-      })
+      const response = await updateProfile({
+       username
+     })
 
-      toast('Profile updated successfully')
+    updateUser(response.user.username)
+
+     toast('Profile updated successfully')
     } catch (e) {
       toast(e.message, 'error')
     } finally {
