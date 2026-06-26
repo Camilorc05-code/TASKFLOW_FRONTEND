@@ -19,9 +19,9 @@ export default function LoginPage() {
     setLoading(true)
     try {
       const data = await login(form.email, form.password)
-      logIn(form.email, data.access_token)
-      toast(`Welcome back, ${form.email}! 🎉`)
-      navigate('/dashboard')
+     logIn(data.user.username, data.access_token)
+      toast(`Welcome back, ${data.user.username}! 🎉`)
+       navigate('/dashboard')
     } catch (e) { toast(e.message, 'error') }
     finally { setLoading(false) }
   }
