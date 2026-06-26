@@ -5,22 +5,10 @@ import Sidebar from './Sidebar'
 export default function AppLayout() {
   const { isAuthenticated } = useAuth()
   if (!isAuthenticated) return <Navigate to="/login" replace />
-
   return (
-    <div style={{
-      display: 'flex',
-      height: '100vh',
-      background: 'var(--bg)'
-    }}>
+    <div className="app-shell">
       <Sidebar />
-
-      <main style={{
-        flex: 1,
-        height: '100vh',
-        overflow: 'auto',   // 👈 ESTE ES EL CAMBIO IMPORTANTE
-        display: 'flex',
-        flexDirection: 'column'
-      }}>
+      <main className="main-content">
         <Outlet />
       </main>
     </div>

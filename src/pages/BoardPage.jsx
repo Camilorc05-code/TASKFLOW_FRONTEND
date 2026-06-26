@@ -35,23 +35,28 @@ export default function BoardPage() {
 
   if (loading) return (
     <div style={{ flex:1, display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column', gap:16 }}>
-      <Spinner size={44}/><p style={{ color:'var(--text-2)' }}>Loading board...</p>
+      <Spinner size={44} /><p style={{ color:'var(--text-2)' }}>Loading board...</p>
     </div>
   )
 
   return (
     <div style={{ flex:1, overflow:'hidden', display:'flex', flexDirection:'column' }}>
-      <div style={{ padding:'24px 28px 18px', display:'flex', alignItems:'center', justifyContent:'space-between', borderBottom:'1px solid var(--border)', flexShrink:0 }}>
+
+      {/* Header */}
+      <div className="page-header" style={{ padding:'20px 24px 16px', display:'flex', alignItems:'center', justifyContent:'space-between', borderBottom:'1px solid var(--border)', flexShrink:0 }}>
         <div>
-          <h1 className="a-slidel" style={{ fontSize:24, fontWeight:800, fontFamily:"'Syne',sans-serif", marginBottom:4 }}>Kanban Board</h1>
-          <p className="a-slidel" style={{ color:'var(--text-2)', fontSize:13, animationDelay:'.06s' }}>{tasks.length} tasks · drag to move between columns</p>
+          <h1 className="a-slidel" style={{ fontSize:22, fontWeight:800, fontFamily:"'Syne',sans-serif", marginBottom:3 }}>Board</h1>
+          <p style={{ color:'var(--text-2)', fontSize:13 }}>{tasks.length} tasks · swipe to see columns</p>
         </div>
-        <button className="btn-primary a-slider" onClick={() => { setCreateStatus('todo'); setShowCreate(true) }}>+ New Task</button>
+        <button className="btn-primary a-slider" onClick={() => { setCreateStatus('todo'); setShowCreate(true) }} style={{ flexShrink:0 }}>
+          + Task
+        </button>
       </div>
 
-      <div style={{ flex:1, display:'flex', gap:16, padding:'20px 28px', overflowX:'auto', overflowY:'hidden' }}>
+      {/* Columnas — scroll horizontal en móvil */}
+      <div className="kanban-board" style={{ flex:1, display:'flex', gap:16, padding:'18px 24px', overflowX:'auto', overflowY:'hidden', WebkitOverflowScrolling:'touch' }}>
         {Object.keys(STATUS_CONFIG).map((status, i) => (
-          <div key={status} style={{ animationDelay:`${.08*i}s`, flex:1, minWidth:280, maxWidth:360, display:'flex', flexDirection:'column' }}>
+          <div key={status} className="kanban-col" style={{ flex:1, minWidth:290, maxWidth:340, display:'flex', flexDirection:'column', animationDelay:`${.08*i}s` }}>
             <KanbanColumn
               status={status}
               tasks={byStatus(status)}
@@ -65,7 +70,7 @@ export default function BoardPage() {
         ))}
       </div>
 
-      <Modal open={showCreate} onClose={() => setShowCreate(false)} title="Create New Task">
+      <Modal open={showCreate} onClose={() => setShowCreate(false)} title="New Task">
         <TaskForm teams={teams} task={{ status: createStatus }}
           onClose={() => setShowCreate(false)}
           onSave={() => { setShowCreate(false); refresh() }} />

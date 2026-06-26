@@ -2,7 +2,7 @@
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 input,textarea,select,button{font-family:'Inter',sans-serif}
 button{cursor:pointer}
 a{text-decoration:none;color:inherit}
@@ -30,33 +30,36 @@ a{text-decoration:none;color:inherit}
   --radius:      10px;
   --radius-lg:   16px;
   --radius-xl:   20px;
+  --sidebar-w:   230px;
+  --topbar-h:    60px;
 }
 
+/* ── Scrollbar ── */
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:10px}
-::-webkit-scrollbar-thumb:hover{background:#354060}
 ::selection{background:var(--accent-glow);color:#fff}
 
-@keyframes fadeUp  {from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeIn  {from{opacity:0}to{opacity:1}}
-@keyframes scaleIn {from{opacity:0;transform:scale(0.93)}to{opacity:1;transform:scale(1)}}
-@keyframes slideR  {from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:translateX(0)}}
-@keyframes slideL  {from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:translateX(0)}}
-@keyframes spin    {to{transform:rotate(360deg)}}
-@keyframes pulse   {0%,100%{opacity:1}50%{opacity:.35}}
-@keyframes float   {0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
-@keyframes orbDrift{0%{transform:translate(0,0)}33%{transform:translate(40px,-28px)}66%{transform:translate(-28px,18px)}100%{transform:translate(0,0)}}
-@keyframes shimmer {0%{background-position:-800px 0}100%{background-position:800px 0}}
-@keyframes glowBeat{0%,100%{box-shadow:0 0 24px var(--accent-glow)}50%{box-shadow:0 0 50px rgba(124,109,250,.45)}}
-@keyframes toastIn {from{opacity:0;transform:translateX(110%) scale(.95)}to{opacity:1;transform:translateX(0) scale(1)}}
-@keyframes modalIn {from{opacity:0;transform:scale(.91) translateY(18px)}to{opacity:1;transform:scale(1) translateY(0)}}
-@keyframes cardPop {from{opacity:0;transform:translateY(28px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes colReveal{from{opacity:0;transform:scaleY(.88) translateY(12px)}to{opacity:1;transform:scaleY(1) translateY(0)}}
-@keyframes countUp {from{transform:scale(.7) translateY(10px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+/* ── Animations ── */
+@keyframes fadeUp   {from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn   {from{opacity:0}to{opacity:1}}
+@keyframes scaleIn  {from{opacity:0;transform:scale(0.93)}to{opacity:1;transform:scale(1)}}
+@keyframes slideR   {from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideL   {from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideUp  {from{opacity:0;transform:translateY(100%)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin     {to{transform:rotate(360deg)}}
+@keyframes pulse    {0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes float    {0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes shimmer  {0%{background-position:-800px 0}100%{background-position:800px 0}}
+@keyframes glowBeat {0%,100%{box-shadow:0 0 24px var(--accent-glow)}50%{box-shadow:0 0 50px rgba(124,109,250,.45)}}
+@keyframes toastIn  {from{opacity:0;transform:translateX(110%) scale(.95)}to{opacity:1;transform:translateX(0) scale(1)}}
+@keyframes modalIn  {from{opacity:0;transform:scale(.91) translateY(18px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes cardPop  {from{opacity:0;transform:translateY(28px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes colReveal{from{opacity:0;transform:scaleY(.88)}to{opacity:1;transform:scaleY(1)}}
+@keyframes countUp  {from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes gradShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-@keyframes underline{from{width:0}to{width:100%}}
-@keyframes breathe {0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+@keyframes orbDrift {0%{transform:translate(0,0)}33%{transform:translate(40px,-28px)}66%{transform:translate(-28px,18px)}100%{transform:translate(0,0)}}
+@keyframes drawerIn {from{transform:translateX(-100%)}to{transform:translateX(0)}}
 
 .a-fadeup {opacity:0;animation:fadeUp  .55s cubic-bezier(.22,.68,0,1.2) forwards}
 .a-fadein {opacity:0;animation:fadeIn  .4s ease forwards}
@@ -64,19 +67,19 @@ a{text-decoration:none;color:inherit}
 .a-slider {opacity:0;animation:slideR  .45s cubic-bezier(.22,.68,0,1.2) forwards}
 .a-slidel {opacity:0;animation:slideL  .45s cubic-bezier(.22,.68,0,1.2) forwards}
 
-/* Buttons */
+/* ── Buttons ── */
 .btn-primary{
   display:inline-flex;align-items:center;gap:8px;
   padding:12px 24px;border-radius:var(--radius);border:none;
-  background:linear-gradient(135deg,var(--accent) 0%,#5e52e0 100%);
+  background:linear-gradient(135deg,var(--accent),#5e52e0);
   color:#fff;font-size:15px;font-weight:600;
   transition:all .22s cubic-bezier(.22,.68,0,1.2);cursor:pointer;
   letter-spacing:.01em;position:relative;overflow:hidden;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
 }
-.btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.12),transparent);opacity:0;transition:opacity .2s}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(124,109,250,.45)}
-.btn-primary:hover::before{opacity:1}
-.btn-primary:active{transform:translateY(0);box-shadow:none}
+.btn-primary:active{transform:scale(.97);box-shadow:none}
 .btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none!important;box-shadow:none!important}
 
 .btn-ghost{
@@ -85,6 +88,8 @@ a{text-decoration:none;color:inherit}
   border:1px solid var(--border-2);background:transparent;
   color:var(--text-2);font-size:14px;font-weight:500;
   transition:all .2s ease;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
 }
 .btn-ghost:hover{border-color:var(--accent);color:var(--text);background:rgba(124,109,250,.07)}
 .btn-ghost:active{transform:scale(.97)}
@@ -95,6 +100,7 @@ a{text-decoration:none;color:inherit}
   background:rgba(0,229,179,.12);color:var(--teal);
   font-size:14px;font-weight:500;border:1px solid rgba(0,229,179,.2);
   transition:all .2s ease;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
 }
 .btn-teal:hover{background:rgba(0,229,179,.2);transform:translateY(-1px)}
 
@@ -104,38 +110,289 @@ a{text-decoration:none;color:inherit}
   background:var(--red-glow);color:var(--red);
   font-size:14px;font-weight:500;border:1px solid rgba(255,84,112,.2);
   transition:all .2s ease;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
 }
 .btn-danger:hover{background:rgba(255,84,112,.22);transform:translateY(-1px)}
 
-/* Card */
+/* ── Card ── */
 .card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;transition:border-color .2s,box-shadow .2s}
 
-/* Input */
-.input{width:100%;padding:11px 15px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:14px;outline:none;transition:all .2s ease}
+/* ── Input ── */
+.input{
+  width:100%;padding:11px 15px;
+  background:var(--bg-input);border:1px solid var(--border);
+  border-radius:var(--radius);color:var(--text);font-size:16px; /* 16px evita zoom en iOS */
+  outline:none;transition:all .2s ease;
+  -webkit-appearance:none;
+}
 .input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
 .input::placeholder{color:var(--text-3)}
+
 .label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase}
 
-/* Badge */
+/* ── Badge ── */
 .badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:6px;font-size:12px;font-weight:500}
 
-/* Skeleton */
+/* ── Skeleton ── */
 .skeleton{background:linear-gradient(90deg,var(--bg-card) 25%,var(--bg-hover) 50%,var(--bg-card) 75%);background-size:800px 100%;animation:shimmer 1.5s infinite;border-radius:8px}
 
-/* Nav */
-.nav-link{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;color:var(--text-2);font-size:14px;font-weight:500;transition:all .18s ease;border-left:2px solid transparent;margin-bottom:2px;cursor:pointer}
+/* ── Nav links ── */
+.nav-link{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;color:var(--text-2);font-size:14px;font-weight:500;transition:all .18s ease;border-left:2px solid transparent;margin-bottom:2px;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .nav-link:hover{background:var(--bg-hover);color:var(--text)}
 .nav-link.active{background:rgba(124,109,250,.12);color:var(--accent);border-left-color:var(--accent);font-weight:600}
 
-/* Progress */
+/* ── Progress ── */
 .progress-track{background:var(--bg-input);border-radius:100px;overflow:hidden}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--teal));border-radius:100px;transition:width .9s cubic-bezier(.22,.68,0,1.2)}
 
-/* Drag */
+/* ── Drag ── */
 .col-dragover{border-color:var(--accent)!important;background:rgba(124,109,250,.05)!important;box-shadow:0 0 40px var(--accent-glow)!important}
 .task-dragging{opacity:.35;transform:rotate(2deg) scale(1.03)!important}
 
-/* Tab */
-.tab{padding:8px 18px;border-radius:8px;font-size:14px;font-weight:500;color:var(--text-2);cursor:pointer;border:none;background:none;transition:all .18s ease}
+/* ── Tab ── */
+.tab{padding:8px 18px;border-radius:8px;font-size:14px;font-weight:500;color:var(--text-2);cursor:pointer;border:none;background:none;transition:all .18s ease;-webkit-tap-highlight-color:transparent}
 .tab:hover{background:var(--bg-hover);color:var(--text)}
 .tab.active{background:var(--bg-input);color:var(--text);font-weight:600}
+
+/* ══════════════════════════════════════════════════════════
+   LAYOUT — App con sidebar (desktop) / topbar+drawer (móvil)
+   ══════════════════════════════════════════════════════════ */
+
+/* App shell */
+.app-shell{display:flex;height:100vh;overflow:hidden;background:var(--bg)}
+
+/* Sidebar desktop */
+.sidebar{
+  width:var(--sidebar-w);background:var(--bg-card);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  height:100vh;position:sticky;top:0;flex-shrink:0;
+  transition:transform .3s cubic-bezier(.22,.68,0,1.2);
+  z-index:200;
+}
+
+/* Main content */
+.main-content{flex:1;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+
+/* Mobile topbar — oculta en desktop */
+.mobile-topbar{display:none}
+
+/* Mobile drawer overlay */
+.drawer-overlay{display:none}
+
+/* Bottom nav — oculta en desktop */
+.bottom-nav{display:none}
+
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE — TABLET (768px)
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  :root{
+    --sidebar-w: 260px;
+    --topbar-h:  56px;
+  }
+
+  /* Ocultar sidebar lateral */
+  .sidebar{
+    position:fixed;top:0;left:0;height:100vh;
+    transform:translateX(-100%);
+    box-shadow:8px 0 40px rgba(0,0,0,.6);
+  }
+  .sidebar.open{
+    transform:translateX(0);
+    animation:drawerIn .3s cubic-bezier(.22,.68,0,1.2);
+  }
+
+  /* Overlay oscuro cuando el drawer está abierto */
+  .drawer-overlay{
+    display:block;
+    position:fixed;inset:0;background:rgba(0,0,0,.6);
+    backdrop-filter:blur(4px);z-index:199;
+    animation:fadeIn .2s ease;
+  }
+
+  /* Topbar móvil */
+  .mobile-topbar{
+    display:flex;align-items:center;justify-content:space-between;
+    height:var(--topbar-h);padding:0 16px;
+    background:var(--bg-card);border-bottom:1px solid var(--border);
+    position:sticky;top:0;z-index:100;flex-shrink:0;
+  }
+  .mobile-topbar-logo{display:flex;align-items:center;gap:8px}
+  .mobile-topbar-logo span{font-size:18px;font-weight:800;font-family:'Syne',sans-serif}
+  .mobile-menu-btn{
+    background:none;border:none;color:var(--text);
+    font-size:22px;cursor:pointer;padding:8px;
+    border-radius:8px;transition:background .15s;
+    -webkit-tap-highlight-color:transparent;
+    line-height:1;
+  }
+  .mobile-menu-btn:hover{background:var(--bg-hover)}
+
+  /* El main ocupa toda la pantalla */
+  .app-shell{flex-direction:column}
+  .main-content{height:calc(100vh - var(--topbar-h));overflow-y:auto}
+
+  /* Página con padding ajustado */
+  .page-content{padding:16px!important}
+
+  /* Cards apiladas en móvil */
+  .stats-grid{grid-template-columns:repeat(2,1fr)!important;gap:10px!important}
+  .bottom-grid{grid-template-columns:1fr!important;gap:14px!important}
+  .features-grid{grid-template-columns:1fr!important;gap:14px!important}
+  .team-grid{grid-template-columns:1fr!important}
+  .settings-grid{grid-template-columns:1fr!important}
+
+  /* Filtros en columna */
+  .filters-row{flex-direction:column!important;gap:8px!important}
+  .filters-row .input{width:100%!important}
+  .filters-row select{width:100%!important}
+
+  /* Tabla de tareas → cards en móvil */
+  .tasks-table-header{display:none!important}
+  .task-table-row{
+    display:flex!important;flex-direction:column!important;
+    gap:8px!important;padding:14px 16px!important;
+    grid-template-columns:none!important;
+  }
+  .task-table-row .task-title{font-size:15px!important}
+  .task-table-row .task-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+  /* Kanban — scroll horizontal */
+  .kanban-board{
+    padding:14px 12px!important;
+    gap:12px!important;
+    overflow-x:auto!important;
+    -webkit-overflow-scrolling:touch;
+    scroll-snap-type:x mandatory;
+    padding-bottom:20px!important;
+  }
+  .kanban-col{
+    min-width:280px!important;
+    max-width:280px!important;
+    scroll-snap-align:start;
+  }
+
+  /* Modal a pantalla completa en móvil */
+  .modal-wrapper{
+    align-items:flex-end!important;
+    padding:0!important;
+  }
+  .modal-box{
+    border-radius:20px 20px 0 0!important;
+    max-height:92vh!important;
+    width:100%!important;
+    max-width:100%!important;
+    animation:slideUp .35s cubic-bezier(.22,.68,0,1.2)!important;
+  }
+
+  /* Header de páginas */
+  .page-header{
+    flex-direction:column!important;
+    align-items:flex-start!important;
+    gap:12px!important;
+    margin-bottom:16px!important;
+  }
+  .page-header .btn-primary{width:100%;justify-content:center}
+
+  /* Landing hero */
+  .hero-section{padding:100px 20px 60px!important}
+  .hero-title{font-size:clamp(38px,9vw,60px)!important}
+  .hero-cta{flex-direction:column!important;align-items:stretch!important}
+  .hero-cta .btn-primary,.hero-cta .btn-ghost{width:100%;justify-content:center}
+  .hero-stats{flex-direction:column!important;gap:10px!important}
+  .hero-stats>div{width:100%!important;text-align:left!important;display:flex!important;justify-content:space-between!important;align-items:center!important}
+
+  /* Navbar landing */
+  .landing-nav{padding:14px 16px!important}
+  .landing-nav-links{gap:8px!important}
+  .landing-nav-links .btn-ghost{padding:8px 14px!important;font-size:13px!important}
+  .landing-nav-links .btn-primary{padding:8px 14px!important;font-size:13px!important}
+
+  /* Browser mockup oculto en móvil */
+  .browser-mockup{display:none!important}
+
+  /* CTA section */
+  .cta-box{padding:40px 24px!important}
+  .cta-box h2{font-size:28px!important}
+
+  /* Auth shell */
+  .auth-shell{padding:16px!important;align-items:flex-start!important;padding-top:40px!important}
+  .auth-card{padding:24px 20px!important}
+
+  /* Team modal tabs — scroll */
+  .team-tabs{overflow-x:auto!important;-webkit-overflow-scrolling:touch!important;flex-wrap:nowrap!important}
+  .team-tabs .tab{white-space:nowrap!important;flex-shrink:0!important}
+
+  /* Sprint cards grid */
+  .sprints-grid{grid-template-columns:1fr!important}
+
+  /* Calendar */
+  .calendar-grid{grid-template-columns:1fr!important}
+  .calendar-side{display:none!important}
+  .calendar-cell{min-height:60px!important;padding:4px 3px!important}
+  .calendar-day-num{width:24px!important;height:24px!important;font-size:12px!important}
+
+  /* Dashboard quick actions */
+  .quick-actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important}
+  .quick-actions button{margin-bottom:0!important}
+
+  /* Backlog filters */
+  .backlog-filters{flex-direction:column!important;gap:8px!important}
+
+  /* Settings side nav → tabs horizontales */
+  .settings-sidenav{
+    display:flex!important;flex-direction:row!important;
+    background:var(--bg-input)!important;
+    border-radius:10px!important;padding:4px!important;
+    margin-bottom:16px!important;
+    overflow-x:auto!important;
+  }
+  .settings-sidenav .nav-link{
+    white-space:nowrap!important;flex-shrink:0!important;
+    border-left:none!important;border-radius:8px!important;
+    padding:8px 16px!important;
+  }
+  .settings-sidenav .nav-link.active{border-left:none!important}
+}
+
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE — MÓVIL PEQUEÑO (480px)
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .stats-grid{grid-template-columns:repeat(2,1fr)!important}
+  .card{padding:16px!important}
+  .modal-box{border-radius:16px 16px 0 0!important}
+
+  /* Kanban columna más angosta */
+  .kanban-col{min-width:260px!important;max-width:260px!important}
+
+  /* Sprint stats */
+  .sprint-stats-row{grid-template-columns:repeat(2,1fr)!important}
+
+  /* Ocultar columnas secundarias en tabla */
+  .col-hide-mobile{display:none!important}
+
+  /* Toasts más pequeños */
+  .toast-container{top:12px!important;right:12px!important;left:12px!important}
+  .toast-container>div{min-width:0!important;max-width:100%!important}
+}
+
+/* ── Tabla de tareas responsiva ─────────────────────────── */
+@media (max-width: 768px) {
+  .task-table-row {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+  }
+  .task-table-row > div:not(:first-child):not(:last-child) {
+    display: none !important;
+  }
+  .task-table-row .task-meta {
+    display: flex !important;
+  }
+  /* Ocultar la columna de actions desktop en móvil
+     (se muestran dentro del .task-meta) */
+  .task-table-row > div:last-child {
+    display: none !important;
+  }
+}
