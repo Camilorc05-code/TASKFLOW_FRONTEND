@@ -11,7 +11,9 @@ export const PRIORITY_CONFIG = {
 export const NAV_ITEMS = [
   { id: 'dashboard', path: '/dashboard', icon: '⊞', label: 'Dashboard' },
   { id: 'board',     path: '/board',     icon: '⬡', label: 'Board'     },
-  { id: 'tasks',     path: '/tasks',     icon: '✓', label: 'Tasks'      },
-  { id: 'teams',     path: '/teams',     icon: '◎', label: 'Teams'      },
-  { id: 'settings',  path: '/settings',  icon: '⚙', label: 'Settings'   },
+  { id: 'tasks',     path: '/tasks',     icon: '✓', label: 'Tasks'     },
+  { id: 'calendar',  path: '/calendar',  icon: '📅', label: 'Calendar' },
+  { id: 'backlog',   path: '/backlog',   icon: '📝', label: 'Backlog'  },
+  { id: 'teams',     path: '/teams',     icon: '◎', label: 'Teams'     },
+  { id: 'settings',  path: '/settings',  icon: '⚙', label: 'Settings'  },
 ]
