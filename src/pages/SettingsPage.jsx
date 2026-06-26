@@ -209,27 +209,4 @@ function SecurityPanel({ toast }) {
   )
 }
 
-function DangerPanel({ logOut, toast }) {
-  return (
-    <div className="card">
-      <h2 style={{ fontSize:16, fontWeight:700, fontFamily:"'Syne',sans-serif", marginBottom:6 }}>Account Actions</h2>
-      <p style={{ fontSize:13, color:'var(--text-2)', marginBottom:20 }}>Manage session and account.</p>
-      <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'14px 16px', border:'1px solid var(--border)', borderRadius:12, background:'var(--bg-input)', flexWrap:'wrap', gap:10 }}>
-          <div>
-            <div style={{ fontSize:14, fontWeight:600, marginBottom:2 }}>Sign Out</div>
-            <div style={{ fontSize:12, color:'var(--text-2)' }}>End your current session</div>
-          </div>
-          <button className="btn-ghost" onClick={logOut}>Sign Out</button>
-        </div>
-        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'14px 16px', border:'1px solid rgba(255,84,112,.22)', borderRadius:12, background:'rgba(255,84,112,.04)', flexWrap:'wrap', gap:10 }}>
-          <div>
-            <div style={{ fontSize:14, fontWeight:600, marginBottom:2, color:'var(--red)' }}>Delete Account</div>
-            <div style={{ fontSize:12, color:'var(--text-2)' }}>Permanently remove account and data</div>
-          </div>
-          <button className="btn-danger" onClick={()=>toast('Requires DELETE /users/me endpoint','warn')}>Delete</button>
-        </div>
-      </div>
-    </div>
-  )
-}
+
